@@ -1,5 +1,7 @@
 package com.example.backend.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,6 +21,8 @@ import com.example.backend.utils.JwtUtil;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
+    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
+    
     @Autowired private AuthenticationManager authManager;
     @Autowired private JwtUtil jwtUtil;
     @Autowired private UserService userService;
@@ -27,21 +31,24 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody AuthRequest request) {
         try {
             Authentication auth = authManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
             
-            String token = jwtUtil.generateToken(request.getUsername());
+            String token = jwtUtil.generateToken(request.getEmail());
             return ResponseEntity.ok(new AuthResponse(token));
         } catch (AuthenticationException e) {
-            return ResponseEntity.badRequest().body("Invalid username or password");
+            return ResponseEntity.badRequest().body("Invalid Email or password");
         }
     }
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody AuthRequest request) {
+        logger.info("Received registration request - Username: {}, Email: {}", request.getUsername(), request.getEmail());
         try {
             userService.registerUser(request);
+            logger.info("User registered successfully");
             return ResponseEntity.ok("User registered successfully");
         } catch (Exception e) {
+            logger.error("Registration failed: {}", e.getMessage());
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }

@@ -4,7 +4,7 @@ import axios from 'axios';
 
 const Login = () => {
     const [formData, setFormData] = useState({
-        username: '',
+        email: '',
         password: ''
     });
     const [error, setError] = useState('');
@@ -24,6 +24,10 @@ const Login = () => {
         try {
             const response = await axios.post('http://localhost:8090/api/auth/login', formData);
             localStorage.setItem('token', response.data.token);
+            localStorage.setItem('user', JSON.stringify({
+                email: formData.email,
+                username: formData.username
+            }));
             navigate('/welcome');
         } catch (err) {
             setError(err.response?.data || 'Login failed');
@@ -47,17 +51,17 @@ const Login = () => {
                     )}
                     <div className="space-y-4">
                         <div>
-                            <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-1">
-                                Username
+                            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                                Email Address
                             </label>
                             <input
-                                id="username"
-                                name="username"
-                                type="text"
+                                id="email"
+                                name="email"
+                                type="email"
                                 required
                                 className="input-focus appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                                placeholder="Enter your username"
-                                value={formData.username}
+                                placeholder="Enter your email"
+                                value={formData.email}
                                 onChange={handleChange}
                             />
                         </div>
