@@ -47,8 +47,8 @@ and token-based route protection.
 ```bash
 cd backend
 ./mvnw spring-boot:run
-
-### 🔧 Frontend Setup
+```
+### ⚛️ Frontend Setup
 ```bash
 cd frontend
 npm install
