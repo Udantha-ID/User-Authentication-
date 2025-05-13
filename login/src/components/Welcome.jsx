@@ -2,9 +2,11 @@ import { useNavigate } from 'react-router-dom';
 
 const Welcome = () => {
     const navigate = useNavigate();
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
 
     const handleLogout = () => {
         localStorage.removeItem('token');
+        localStorage.removeItem('user');
         navigate('/login');
     };
 
@@ -18,20 +20,16 @@ const Welcome = () => {
                         </svg>
                     </div>
                     <h2 className="text-3xl font-bold text-gray-900 mb-2">Welcome!</h2>
-                    <p className="text-gray-600">
-                        You have successfully logged in to your account.
+                    <p className="text-gray-600 mb-4">
+                        You have successfully logged in as <span className="font-semibold text-indigo-600">{user.username}</span>
                     </p>
-                </div>
-                <div className="space-y-4">
+                    <p className="text-sm text-gray-500 mb-8">Your session will expire in 10 hours</p>
                     <button
                         onClick={handleLogout}
                         className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200"
                     >
                         Sign Out
                     </button>
-                    <p className="text-center text-sm text-gray-500">
-                        Session will expire in 10 hours
-                    </p>
                 </div>
             </div>
         </div>
