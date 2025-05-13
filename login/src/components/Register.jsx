@@ -5,6 +5,7 @@ import axios from 'axios';
 const Register = () => {
     const [formData, setFormData] = useState({
         username: '',
+        email: '',
         password: ''
     });
     const [error, setError] = useState('');
@@ -60,6 +61,22 @@ const Register = () => {
                                 onChange={handleChange}
                             />
                         </div>
+                    <div>
+                        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                                Email Address
+                            </label>
+                            <input
+                                id="email"
+                                name="email"
+                                type="email"
+                                required
+                                className="input-focus appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                                placeholder="Choose a username"
+                                value={formData.email}
+                                onChange={handleChange}
+                            />
+                        </div>
+
                         <div>
                             <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
                                 Password
